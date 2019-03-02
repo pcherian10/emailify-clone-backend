@@ -10,9 +10,12 @@ passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
-}, (accessToken) => {
-    console.log(accessToken);
-})
+}, 
+    (accessToken, refreshToken, profile, done) => {
+        console.log('accessToken', accessToken);
+        console.log('refreshtoken', refreshToken);
+        console.log('profile', profile);
+    })
 );
 
 app.get(
