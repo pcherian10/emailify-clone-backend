@@ -1,14 +1,15 @@
 //SurveyForm shows a form rendered by SurveyNew 
 import React, {Component} from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { Link } from 'react-router-dom'
 import SurveyField from './SurveyField'
 import _ from 'lodash';
 
 const FIELDS = [
-    {label: 'Survey Title', name:'title'},
-    {label: 'Subject Line', name:'subject'},
-    {label: 'Email Body', name:'body'},
-    {label: 'Recipient List', name: 'emails'}
+    {label: 'Survey Title', name:'title', noValueError: 'Provide a Survey Title' },
+    {label: 'Subject Line', name:'subject', noValueError: 'Provide a Survey Subject Line'},
+    {label: 'Email Body', name:'body', noValueError: 'Provide a Survey Email Body/Question Line'},
+    {label: 'Recipient List', name: 'emails', noValueError: 'Please provide a proper list of emails'}
 ];
 
 class SurveyForm extends Component {
@@ -28,16 +29,36 @@ class SurveyForm extends Component {
     render() {
         return (
             <div>
+                {this.renderFields()}
                 <form onSubmit = {this.props.handleSubmit(values => console.log(values))}>
-                    {this.renderFields()}
-                    <button type="submit">Submit</button>
+                <Link to="/surveys" className="red btn-flat white-text">
+                    Cancel
+                </Link>
+                    <button type="submit" className="teal btn-flat right white-text">
+                        Next
+                        <i className="material-icons right">done</i>
+                    </button>
                 </form>
             </div>
         );
     }
 }
 
+function validate(values) {
+    const errors = {};
+
+    _.each(FIELDS, ({ name, noValueError }) => {
+        if (!values[name]) {
+            errors[name] = noValueError
+        }
+
+    })
+
+    return errors;
+}
+
 export default reduxForm({
+    validate,
     form: 'surveyForm'
 })(SurveyForm);
 //reduxform only takes one object as opposed to connect
