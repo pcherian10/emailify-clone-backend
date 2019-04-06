@@ -1,5 +1,5 @@
-function localtunnel {
-    lt -s https://aslkdfoinvw.localtunnel.me --port 5000
+localtunnel() {
+  lt -s aslkdfoinvw --port 5000
 }
 until localtunnel; do
 echo "localtunnel server crashed"
